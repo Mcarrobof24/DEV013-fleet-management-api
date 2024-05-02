@@ -1,5 +1,5 @@
 //En este archivo se crea el servidor 
-import express, { Application, Request, Response } from 'express';
+import express, { Application} from 'express';
 
 import taxisRoutes from './routes/taxis'
 
