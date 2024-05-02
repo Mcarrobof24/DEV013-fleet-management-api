@@ -1,14 +1,15 @@
 //En este archivo se crea el servidor 
 import express, { Application, Request, Response } from 'express';
 
+import taxisRoutes from './routes/taxis'
+
 const app: Application = express();
 
-const PORT: number = 3000;
+app.set('port', process.env.PORT || 3000);
 
-app.use('/', (req: Request, res: Response): void => {
-    res.send('Hello world!');
-});
+//Para trabajar con archivos json
+app.use(express.json())
+app.use(taxisRoutes)
 
-app.listen(PORT, (): void => {
-    console.log('SERVER IS UP ON PORT:', PORT);
-});
+export default app
+
