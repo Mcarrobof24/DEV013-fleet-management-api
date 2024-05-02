@@ -1,3 +1,4 @@
+//En este archivo se crea el servidor 
 import express, { Application, Request, Response } from 'express';
 
 const app: Application = express();
