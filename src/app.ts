@@ -2,7 +2,6 @@
 import express, { Application} from 'express';
 //Swagger
 import swaggerUI from 'swagger-ui-express';
-import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerSpec from './swaggerOptions';
 import taxisRoutes from './routes/taxis'
 
@@ -12,6 +11,8 @@ app.set('port', process.env.PORT || 3000);
 
 //Para trabajar con archivos json
 app.use(express.json());
+
+//rutas declaradas
 app.use(taxisRoutes);
 
 //Implementar Swagger

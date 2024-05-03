@@ -13,6 +13,7 @@ const app = (0, express_1.default)();
 app.set('port', process.env.PORT || 3000);
 //Para trabajar con archivos json
 app.use(express_1.default.json());
+//rutas declaradas
 app.use(taxis_1.default);
 //Implementar Swagger
 app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerOptions_1.default));
