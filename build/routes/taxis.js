@@ -33,7 +33,7 @@ const router = (0, express_1.Router)();
  *                  application/json
  *              schema:
  *                  type: array
- *                  $ref: '#/components/schemas/Taxis'
+ *                  $ref: '#/components/schema/taxis'
  *          500:
  *              description: Error interno del servidor
  *
