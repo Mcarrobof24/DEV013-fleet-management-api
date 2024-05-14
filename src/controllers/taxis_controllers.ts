@@ -12,6 +12,7 @@ export const getAllTaxis: Handler = async(req, res) => {
     const pageSize = 10; 
 
     try{
+        
         const taxis = await prisma.taxis.findMany({
             // Saltar los taxis anteriores a la página actual
             skip: (page - 1) * pageSize, 

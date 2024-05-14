@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 //En este archivo se crea el servidor 
 const express_1 = __importDefault(require("express"));
 //Swagger
-const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const swaggerOptions_1 = __importDefault(require("./swaggerOptions"));
 const taxis_1 = __importDefault(require("./routes/taxis"));
 const trajectories_1 = __importDefault(require("./routes/trajectories"));
@@ -18,5 +17,6 @@ app.use(express_1.default.json());
 app.use(taxis_1.default);
 app.use(trajectories_1.default);
 //Implementar Swagger
-app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerOptions_1.default));
+//app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSetup));
+app.use(swaggerOptions_1.default);
 exports.default = app;

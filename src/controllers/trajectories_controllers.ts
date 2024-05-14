@@ -11,7 +11,8 @@ export const getLocationById: Handler = async(req, res) => {
      const pageSize = 10;
 
     try{
-        const { taxiId } = req.query;
+        const { taxiId } = req.params;
+        const { date } = req.query;
         const location = await prisma.trajectories.findMany({
             select:{
                 latitude: true,

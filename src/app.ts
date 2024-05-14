@@ -1,8 +1,9 @@
 //En este archivo se crea el servidor 
 import express, { Application} from 'express';
 //Swagger
-import swaggerUI from 'swagger-ui-express';
-import swaggerSpec from './swaggerOptions';
+import routerSwagger from './swaggerOptions';
+
+
 import taxisRoutes from './routes/taxis'
 import trajectoriesRoutes from './routes/trajectories'
 
@@ -18,7 +19,8 @@ app.use(taxisRoutes);
 app.use(trajectoriesRoutes);
 
 //Implementar Swagger
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+//app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSetup));
+app.use(routerSwagger);
 
 export default app
 
