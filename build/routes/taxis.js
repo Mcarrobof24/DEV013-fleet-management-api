@@ -32,12 +32,14 @@ const router = (0, express_1.Router)();
  *                  type: integer
  *                  default: 10
  *          responses:
- *              200:
+ *              '200':
  *                  description: Successful operation
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: "#/components/schemas/Taxis"
+ *                              type: array
+ *                              items:
+ *                                  $ref: '#/components/schemas/Taxis'
  *
  */
 router.get('/taxis', taxis_controllers_1.getAllTaxis);

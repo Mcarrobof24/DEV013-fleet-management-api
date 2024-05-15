@@ -33,13 +33,24 @@ const router = Router()
  *                  type: integer
  *                  default: 10
  *          responses:
- *              200:
+ *              '200':
  *                  description: Successful operation
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: "#/components/schemas/Taxis"                                                               
- *                            
+ *                              type: array                                     
+ *                              $ref: '#/components/schemas/Taxis'
+ *                          examples:
+ *                              allTaxis:
+ *                                  value:
+ *                                      - id: 974
+ *                                        plate: "FNDF-2678"
+ *                                      - id: 8935
+ *                                        plate: "GAJG-2446"
+ *                                      - id: 6772
+ *                                        plate: "NOCB-3788"
+ * 
+ *                                                                 
  */
 
 router.get('/taxis', getAllTaxis)
