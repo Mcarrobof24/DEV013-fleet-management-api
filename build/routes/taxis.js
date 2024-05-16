@@ -38,8 +38,17 @@ const router = (0, express_1.Router)();
  *                      application/json:
  *                          schema:
  *                              type: array
- *                              items:
- *                                  $ref: '#/components/schemas/Taxis'
+ *                              $ref: '#/components/schemas/Taxis'
+ *                          examples:
+ *                              allTaxis:
+ *                                  value:
+ *                                      - id: 974
+ *                                        plate: "FNDF-2678"
+ *                                      - id: 8935
+ *                                        plate: "GAJG-2446"
+ *                                      - id: 6772
+ *                                        plate: "NOCB-3788"
+ *
  *
  */
 router.get('/taxis', taxis_controllers_1.getAllTaxis);

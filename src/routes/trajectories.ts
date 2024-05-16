@@ -130,7 +130,7 @@ const router = Router()
  *                                                                 
  */
 
-router.get('/trajectories/:id', getLocationById)
+router.get('/trajectories/:taxiId', getLocationById)
 
 
 export default router

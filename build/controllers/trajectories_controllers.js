@@ -18,8 +18,7 @@ const getLocationById = (req, res) => __awaiter(void 0, void 0, void 0, function
     // Tamaño de la página
     const pageSize = 10;
     try {
-        const { taxiId } = req.params;
-        const { date } = req.query;
+        const { taxiId } = req.query;
         const location = yield prisma.trajectories.findMany({
             select: {
                 latitude: true,
