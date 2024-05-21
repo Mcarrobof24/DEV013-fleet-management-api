@@ -1,5 +1,6 @@
 import { Handler } from "express"
 import { PrismaClient } from '@prisma/client'
+import { isNull } from "util";
 
 const prisma = new PrismaClient()
 
@@ -66,29 +67,44 @@ export const getLastLocation: Handler = async(req, res) => {
         
         // Tamaño de la página
         const pageSize = 10;
-        const lastLocation = await prisma.trajectories.findMany({
+        const lastLocation = await prisma.taxis.findMany({
             select:{
-                taxis: {
+                id: true,
+                plate:true,
+                trajectories:{
+                    orderBy:{
+                        date: 'desc',
+                    },
+                    take: 1,
                     select:{
-                        plate: true,
-                    }
+                        taxi_id: true,
+                        latitude: true,
+                        longitude: true,
+                        date: true
+                    },
                 },
-                taxi_id: true,
-                latitude: true,
-                longitude: true,
-                date: true,
-            },
-            orderBy: {
-                date: 'desc',
-            },
-            // Saltar los taxis anteriores a la página actual
-            skip: (page - 1) * pageSize, 
-            // Tomar solo el número especificado de taxis
-            take: pageSize,
-            
-        })
+            },  
+        });
+        
 
-        return res.status(200).json({data: lastLocation});
+        const formattedTaxis = lastLocation.map((taxi) => {
+            const lastTrajectory = taxi.trajectories[0];
+            return lastTrajectory
+              ? {
+                  taxiId: lastTrajectory.taxi_id,
+                  plate: taxi.plate,
+                  date: lastTrajectory.date,
+                  latitude: lastTrajectory.latitude,
+                  longitude: lastTrajectory.longitude,
+                }
+              : null;
+        });
+        
+        const arraySinNulls = formattedTaxis.filter((taxi) => taxi !== null);
+        
+        console.log('nukk', arraySinNulls);
+
+        return res.status(200).json({data: arraySinNulls});
 
     } catch(error){
         console.log(error);
