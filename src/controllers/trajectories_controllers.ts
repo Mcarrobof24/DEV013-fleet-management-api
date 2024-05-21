@@ -1,6 +1,6 @@
-import { Handler } from "express"
-import { PrismaClient } from '@prisma/client'
-import { isNull } from "util";
+import { Handler } from "express";
+import { PrismaClient } from '@prisma/client';
+import { getAllTrajectories} from '../services/trajectories_services'
 
 const prisma = new PrismaClient()
 
@@ -9,8 +9,21 @@ export const getLocationById: Handler = async(req, res) => {
      
 
     try{
+        const page: number = parseInt(req.query.page as string)||1;
+        const take: number = 10;
+        const taxiId = req.params.taxiId as string;
+        const date = req.query.date as string;
+        // Parsear la fecha de la consulta para asegurar que esté en el formato correcto
+        const parsedDate = new Date(date) as any;
+        const nextDay =  new Date(parsedDate.getTime() + 24 * 60 * 60 * 1000) as any;
+        const location = await getAllTrajectories(taxiId, page, parsedDate, nextDay);
+
+        return res.status(200).json({data: location})
+        
+
+
         // Obtener el número de página de la solicitud o usar 1 como predeterminado
-        const page = parseInt(req.query.page as string) || 1; 
+        /*const page = parseInt(req.query.page as string) || 1; 
         
         // Tamaño de la página
         const pageSize = 10;
@@ -51,7 +64,7 @@ export const getLocationById: Handler = async(req, res) => {
         console.log(`Parsed Date: ${parsedDate}`);
         console.log(`Next Day: ${nextDay}`);
 
-        return res.status(200).json({data: location});
+        return res.status(200).json({data: location});*/
     } catch(error){
         console.log(error);
         res.status(500).json({error: 'Error del servidor'});

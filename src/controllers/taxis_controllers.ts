@@ -22,10 +22,10 @@ export const getAllTaxis: Handler = async(req, res) => {
                 id: 'asc',
               },
         })
-        console.log(taxis);
+        //console.log(taxis);
         return res.status(200).json({data: taxis});
     } catch(error){
-        console.log(error);
+        //console.log(error);
         res.status(500).json({error: 'Error del servidor'});
 
     }
