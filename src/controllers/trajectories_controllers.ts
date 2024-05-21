@@ -62,11 +62,6 @@ export const getLocationById: Handler = async(req, res) => {
 
 export const getLastLocation: Handler = async(req, res) => {
     try{
-        // Obtener el número de página de la solicitud o usar 1 como predeterminado
-        const page = parseInt(req.query.page as string) || 1; 
-        
-        // Tamaño de la página
-        const pageSize = 10;
         const lastLocation = await prisma.taxis.findMany({
             select:{
                 id: true,
