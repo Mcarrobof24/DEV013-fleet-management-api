@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getLocationById } from "../controllers/trajectories_controllers";
+import { getLocationById, getLastLocation } from "../controllers/trajectories_controllers";
 
 
 const router = Router()
@@ -130,7 +130,9 @@ const router = Router()
  *                                                                 
  */
 
-router.get('/trajectories/:taxiId', getLocationById)
+router.get('/trajectories/:taxiId', getLocationById);
+
+router.get('/trajectories/search/lastest', getLastLocation)
 
 
 export default router
