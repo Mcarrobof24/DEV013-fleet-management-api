@@ -1,6 +1,6 @@
 import { Handler } from "express";
 import { PrismaClient } from '@prisma/client';
-import { getAllTrajectories} from '../services/trajectories_services'
+import { getAllTrajectories, getLastTrajectories} from '../services/trajectories_services'
 
 const prisma = new PrismaClient()
 
@@ -75,7 +75,27 @@ export const getLocationById: Handler = async(req, res) => {
 
 export const getLastLocation: Handler = async(req, res) => {
     try{
-        const lastLocation = await prisma.taxis.findMany({
+        const location = await getLastTrajectories();
+        const formattedTaxis = location.map((taxi: { trajectories: any[]; plate: any; }) => {
+            const lastTrajectory = taxi.trajectories[0];
+            return lastTrajectory
+              ? {
+                  taxiId: lastTrajectory.taxi_id,
+                  plate: taxi.plate,
+                  date: lastTrajectory.date,
+                  latitude: lastTrajectory.latitude,
+                  longitude: lastTrajectory.longitude,
+                }
+              : null;
+        });
+        
+        const lastLocation = formattedTaxis.filter((taxi: { trajectories: any[]; plate: any; }) => taxi !== null);
+        
+        console.log('nukk', lastLocation);
+
+        return res.status(200).json({data: lastLocation});
+
+        /*const lastLocation = await prisma.taxis.findMany({
             select:{
                 id: true,
                 plate:true,
@@ -112,7 +132,7 @@ export const getLastLocation: Handler = async(req, res) => {
         
         console.log('nukk', arraySinNulls);
 
-        return res.status(200).json({data: arraySinNulls});
+        return res.status(200).json({data: arraySinNulls});*/
 
     } catch(error){
         console.log(error);

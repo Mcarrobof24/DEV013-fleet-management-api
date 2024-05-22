@@ -1,4 +1,5 @@
-import { getAllTrajectories} from '../src/services/trajectories_services';
+import { getAllTrajectories, getLastTrajectories} from '../src/services/trajectories_services';
+import { getLastLocation } from '../src/controllers/trajectories_controllers';
 import { PrismaClient } from '@prisma/client';
 
 //Mockear base de datos
@@ -21,7 +22,7 @@ jest.mock('@prisma/client', ()=>{
             ]),
         },
         trajectoriesLocation:{
-            finUnique: jest.fn().mockResolvedValue([
+            findMany: jest.fn().mockResolvedValue([
                 {
                     "taxiId": 7249,
                     "plate": "CNCJ-2997",
@@ -51,6 +52,8 @@ jest.mock('@prisma/client', ()=>{
     };
 });
 
+const mockPrisma = new PrismaClient();
+
 describe('GET /trajectories/:taxiId', ()=>{
     it('Deberia regresar las trajectorias por taxiId, date y paginadas', async()=>{
         const page=0;
@@ -66,5 +69,29 @@ describe('GET /trajectories/:taxiId', ()=>{
         ])
     })
 })
+
+/*describe('GET /trajectories/search/lastest', ()=>{
+    it('Deberia regresar la ultima trajectoria del taxi con las propiedades por taxiId, date, longitude, plate, latitude', async()=>{
+      
+        const resp= await getLastTrajectories();
+        console.log('esta es la respuesta del test', resp)
+        expect(resp).toEqual([
+            {
+                "plate": "CNCJ-2997",
+                
+            },
+            {
+                "plate": "PAOF-6727",
+                
+            },
+            {
+                "plate": "CCKF-1601",
+
+            }
+            
+        ])
+    })
+})*/
+
 
 

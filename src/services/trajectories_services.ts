@@ -23,3 +23,26 @@ export const getAllTrajectories = async(taxi_id: string, page:number, parsedDate
     });
     return location;
 }
+
+export const getLastTrajectories = async(): Promise<any> =>{
+    const lastLocation = await prisma.taxis.findMany({
+        select:{
+            plate: true,
+            trajectories: {
+                orderBy: {
+                    date: 'desc',
+                },
+                take: 1,
+                select:{
+                    taxi_id: true,
+                    latitude: true,
+                    longitude: true,
+                    date: true
+                },
+            },
+        },
+    });
+
+    return lastLocation;
+
+}
