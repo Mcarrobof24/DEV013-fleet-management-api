@@ -1,6 +1,6 @@
-import { Handler } from "express"
-import { PrismaClient } from '@prisma/client'
-import { isNull } from "util";
+import { Handler } from "express";
+import { PrismaClient } from '@prisma/client';
+import { getAllTrajectories, getLastTrajectories} from '../services/trajectories_services'
 
 const prisma = new PrismaClient()
 
@@ -9,8 +9,21 @@ export const getLocationById: Handler = async(req, res) => {
      
 
     try{
+        const page: number = parseInt(req.query.page as string)||1;
+        const take: number = 10;
+        const taxiId = req.params.taxiId as string;
+        const date = req.query.date as string;
+        // Parsear la fecha de la consulta para asegurar que esté en el formato correcto
+        const parsedDate = new Date(date) as any;
+        const nextDay =  new Date(parsedDate.getTime() + 24 * 60 * 60 * 1000) as any;
+        const location = await getAllTrajectories(taxiId, page, parsedDate, nextDay);
+
+        return res.status(200).json({data: location})
+        
+
+
         // Obtener el número de página de la solicitud o usar 1 como predeterminado
-        const page = parseInt(req.query.page as string) || 1; 
+        /*const page = parseInt(req.query.page as string) || 1; 
         
         // Tamaño de la página
         const pageSize = 10;
@@ -51,7 +64,7 @@ export const getLocationById: Handler = async(req, res) => {
         console.log(`Parsed Date: ${parsedDate}`);
         console.log(`Next Day: ${nextDay}`);
 
-        return res.status(200).json({data: location});
+        return res.status(200).json({data: location});*/
     } catch(error){
         console.log(error);
         res.status(500).json({error: 'Error del servidor'});
@@ -62,7 +75,27 @@ export const getLocationById: Handler = async(req, res) => {
 
 export const getLastLocation: Handler = async(req, res) => {
     try{
-        const lastLocation = await prisma.taxis.findMany({
+        const location = await getLastTrajectories();
+        const formattedTaxis = location.map((taxi: { trajectories: any[]; plate: any; }) => {
+            const lastTrajectory = taxi.trajectories[0];
+            return lastTrajectory
+              ? {
+                  taxiId: lastTrajectory.taxi_id,
+                  plate: taxi.plate,
+                  date: lastTrajectory.date,
+                  latitude: lastTrajectory.latitude,
+                  longitude: lastTrajectory.longitude,
+                }
+              : null;
+        });
+        
+        const lastLocation = formattedTaxis.filter((taxi: { trajectories: any[]; plate: any; }) => taxi !== null);
+        
+        console.log('nukk', lastLocation);
+
+        return res.status(200).json({data: lastLocation});
+
+        /*const lastLocation = await prisma.taxis.findMany({
             select:{
                 id: true,
                 plate:true,
@@ -99,7 +132,7 @@ export const getLastLocation: Handler = async(req, res) => {
         
         console.log('nukk', arraySinNulls);
 
-        return res.status(200).json({data: arraySinNulls});
+        return res.status(200).json({data: arraySinNulls});*/
 
     } catch(error){
         console.log(error);
